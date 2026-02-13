@@ -59,4 +59,5 @@ This structure avoids mixing parsing logic with domain computation.
 Compile and run using:
 
 javac Main.java
+
 java Main
