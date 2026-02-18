@@ -48,11 +48,14 @@ public class CalculatorScreen {
     private void handleMenuInput(MenuInput command) {
         switch (command.value()) {
             case "help" -> showHelp();
-            case "reload" -> engine.load();
+            case "reload" -> {
+                engine.load();
+                System.out.println("Current values result in Food Diversity of: " + engine.calculate());
+            }
         }
     }
 
     private void showHelp() {
-        System.out.println("Enter \"exit\" to quit.");
+        System.out.println("Enter \"reload\" to load and calculate values, or \"exit\" to quit.");
     }
 }
