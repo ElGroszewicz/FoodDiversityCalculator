@@ -1,24 +1,25 @@
 package me.groszewicz;
 
-import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class CalculatorScreen {
 
-    public void run(Scanner scanner) {
-        showOptions();
-        while (true) {
-            String input = readInput(scanner);
-            ParsedInput choice = parseInput(input);
-            if (choice instanceof ExitInput) {
-                return;
-            }
-            handleParsedInput(choice);
-        }
+    private final CalculatorEngine engine;
+
+    public CalculatorScreen(CalculatorEngine engine) {
+        this.engine = engine;
     }
 
-    private void showOptions() {
-        System.out.println("Enter \"exit\" to quit.");
+    public void run(Scanner scanner) {
+        showHelp();
+        while (true) {
+            String input = readInput(scanner);
+            ParsedInput userInput = parseInput(input);
+            if (userInput instanceof ExitInput) {
+                return;
+            }
+            handleParsedInput(userInput);
+        }
     }
 
     private String readInput(Scanner scanner) {
@@ -29,19 +30,29 @@ public class CalculatorScreen {
         if (input.equalsIgnoreCase("exit")) {
             return new ExitInput();
         }
-        try {
-            BigDecimal number = new BigDecimal(input);
-            return new NumberInput(number);
-        } catch (NumberFormatException ignored) {}
-
-    return new MenuInput(input.toLowerCase());
+        // try {
+        //     BigDecimal number = new BigDecimal(input);
+        //     return new NumberInput(number);
+        // } catch (NumberFormatException ignored) {}
+        return new MenuInput(input.toLowerCase());
     }
 
-    private void handleParsedInput(ParsedInput choice) {
-        switch (choice) {
-            case NumberInput n -> System.out.println("Number handling not built yet."); //call CalculatorEngine methods
-            case MenuInput m -> System.out.println("Command handling not built yet."); //command handling
+    private void handleParsedInput(ParsedInput userInput) {
+        switch (userInput) {
+            //case NumberInput n -> System.out.println("Direct number handling not built yet."); //call CalculatorEngine methods
+            case MenuInput m -> handleMenuInput(m);
             case ExitInput ignored -> throw new IllegalStateException("ExitInput reached handler unexpectedly"); //Exit is handled in run()
-        };
+        }
+    }
+
+    private void handleMenuInput(MenuInput command) {
+        switch (command.value()) {
+            case "help" -> showHelp();
+            case "reload" -> engine.load();
+        }
+    }
+
+    private void showHelp() {
+        System.out.println("Enter \"exit\" to quit.");
     }
 }
