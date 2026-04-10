@@ -48,7 +48,6 @@ This structure avoids mixing parsing logic with domain computation.
 
 ## Planned Improvements
 
-- Full calculation engine implementation
 - Configurable parameters to support non-standard mod configuration
 - Persistent update of values through CLI
 - Built-in item list (maybe)

@@ -12,6 +12,7 @@ public class CalculatorEngine {
 
     public void load() {
         source.load();
+        source.normalize();
     }
 
     public BigDecimal calculate() {
